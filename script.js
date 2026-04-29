@@ -78,14 +78,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 
-/* ─── Contact form → sends enquiry via email ─── */
+/* ─── Contact form → Formspree ─── */
 const contactForm = document.getElementById('contactForm');
 
-contactForm.addEventListener('submit', function (e) {
+contactForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const name    = document.getElementById('fname').value.trim();
-    const phone   = document.getElementById('fphone').value.trim();
     const message = document.getElementById('fmsg').value.trim();
 
     if (!name || !message) {
@@ -93,12 +92,41 @@ contactForm.addEventListener('submit', function (e) {
         return;
     }
 
-    const subject = encodeURIComponent(`Enquiry from ${name} — Tauji ka Churan`);
-    const body    = encodeURIComponent(
-        `Name: ${name}\nPhone: ${phone || 'Not provided'}\n\nMessage:\n${message}`
-    );
+    const submitBtn = document.getElementById('submitBtn');
+    const formNote  = document.getElementById('formNote');
 
-    window.location.href = `mailto:kikosharma3@gmail.com?subject=${subject}&body=${body}`;
+    submitBtn.textContent = 'Sending…';
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch('https://formspree.io/f/mkoywgol', {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+            contactForm.reset();
+            submitBtn.textContent = '✓ Sent!';
+            submitBtn.style.background = '#4a7a4a';
+            formNote.textContent = 'Thank you! We will get back to you soon.';
+            formNote.style.color = '#2F4F2F';
+            setTimeout(() => {
+                submitBtn.textContent = 'Send Enquiry';
+                submitBtn.disabled = false;
+                submitBtn.style.background = '';
+                formNote.textContent = 'We\'ll get back to you as soon as possible.';
+                formNote.style.color = '';
+            }, 4000);
+        } else {
+            throw new Error('Failed');
+        }
+    } catch {
+        submitBtn.textContent = 'Send Enquiry';
+        submitBtn.disabled = false;
+        formNote.textContent = 'Something went wrong. Please call or WhatsApp us directly.';
+        formNote.style.color = '#c0392b';
+    }
 });
 
 

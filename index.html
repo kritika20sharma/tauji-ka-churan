@@ -392,6 +392,7 @@
                 <div class="contact-form-wrap reveal">
                     <form class="contact-form" id="contactForm" novalidate>
                         <h3>Send an Enquiry</h3>
+                        <input type="hidden" name="_subject" value="New Enquiry — Tauji ka Churan">
                         <div class="form-group">
                             <label for="fname">Your Name</label>
                             <input type="text" id="fname" name="name" placeholder="What should we call you?" required autocomplete="name">
@@ -404,8 +405,8 @@
                             <label for="fmsg">Your Message</label>
                             <textarea id="fmsg" name="message" rows="4" placeholder="Tell us what you need, or just say hello..." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Send Enquiry</button>
-                        <p class="form-note">Your message will open in your email app, ready to send.</p>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Send Enquiry</button>
+                        <p class="form-note" id="formNote">We'll get back to you as soon as possible.</p>
                     </form>
                 </div>
             </div>
