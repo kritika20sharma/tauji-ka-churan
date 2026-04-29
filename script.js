@@ -78,7 +78,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 
-/* ─── Contact form → opens WhatsApp with prefilled message ─── */
+/* ─── Contact form → sends enquiry via email ─── */
 const contactForm = document.getElementById('contactForm');
 
 contactForm.addEventListener('submit', function (e) {
@@ -93,12 +93,12 @@ contactForm.addEventListener('submit', function (e) {
         return;
     }
 
-    const parts = [`Hello Tauji, my name is ${name}.`];
-    if (phone) parts.push(`My phone number is ${phone}.`);
-    parts.push(message);
+    const subject = encodeURIComponent(`Enquiry from ${name} — Tauji ka Churan`);
+    const body    = encodeURIComponent(
+        `Name: ${name}\nPhone: ${phone || 'Not provided'}\n\nMessage:\n${message}`
+    );
 
-    const waText = encodeURIComponent(parts.join(' '));
-    window.open(`https://wa.me/919816345882?text=${waText}`, '_blank', 'noopener,noreferrer');
+    window.location.href = `mailto:kikosharma3@gmail.com?subject=${subject}&body=${body}`;
 });
 
 
